@@ -176,17 +176,17 @@ def apply_event_modifiers_to_session_state(quarter):
 
     event = get_event_for_quarter(quarter)
     # =========================================
-# Linked Learning Scenario Logic
-# =========================================
+    # Linked Learning Scenario Logic
+    # =========================================
     if quarter == 3:
 
-    if "strategy_memory" not in st.session_state:
-        return
+        if "strategy_memory" not in st.session_state:
+            return
 
-    if "supplier" not in st.session_state.strategy_memory:
-        return
+        if "supplier" not in st.session_state.strategy_memory:
+            return
 
-    supplier_choice = st.session_state.strategy_memory.get("supplier")
+        supplier_choice = st.session_state.strategy_memory.get("supplier")
 
 previous_reason = st.session_state.motivations.get(
     "Q2_Purchasing",
