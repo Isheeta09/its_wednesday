@@ -178,11 +178,20 @@ def apply_event_modifiers_to_session_state(quarter):
     # =========================================
 # Linked Learning Scenario Logic
 # =========================================
-
 if quarter == 3:
+    if "supplier" not in st.session_state.strategy_memory:
+        return
 
     supplier_choice = st.session_state.strategy_memory.get("supplier")
 
+previous_reason = st.session_state.motivations.get(
+    "Q2_Purchasing",
+    "No rationale recorded."
+)
+if supplier_choice and previous_reason:
+    event["description"] += (
+        f"\n\nPrevious purchasing rationale: {previous_reason}"
+    )
     if supplier_choice == "Reliable Supplier":
 
         event["kpi_modifier"]["risk"] = max(
@@ -1964,15 +1973,35 @@ The company currently buys many components from a low-cost overseas supplier. Th
         )
 
         st.caption(options[choice])
+# Decision Reflection
 
-        if st.button(
+motivation = st.text_area(
+    "Why did you choose this supplier strategy?",
+    placeholder="Explain your reasoning (cost reduction, reliability, sustainability, risk reduction, etc.)",
+    key=f"motivation_q{st.session_state.quarter}"
+)
+if st.button(
             "✅ Confirm purchasing decision",
             key="confirm_purchasing",
             disabled=st.session_state.purchasing_confirmed or st.session_state.game_paused,
-        ):
+):
             st.session_state.purchasing_confirmed = True
             st.session_state.purchasing_chosen = choice
-
+    if "strategy_memory" not in st.session_state:
+    st.session_state.strategy_memory = {}
+if "low-cost" in choice.lower():
+    st.session_state.strategy_memory["supplier"] = "Low Cost Supplier"
+elif "reliable" in choice.lower():
+    st.session_state.strategy_memory["supplier"] = "Reliable Supplier"
+else:
+    st.session_state.strategy_memory["supplier"] = "Split purchasing between both suppliers"
+    st.session_state.motivations[
+            f"Q{st.session_state.quarter}_Purchasing"
+] = motivation.strip()        
+if motivation.strip() == "":
+            st.warning(
+                "Consider explaining your reasoning. Supply chain decisions should be justified using cost, service, risk or sustainability factors."
+            ) 
             if "Purchasing" not in st.session_state.completed_games:
                 if choice == "Split purchasing between both suppliers":
                     impact = apply_kpi_change(score=8, profit=-60000, service=5, sustainability=2, lead_time=-2, risk=-8)
