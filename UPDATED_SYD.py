@@ -68,7 +68,22 @@ defaults = {
     "completed_games": [],
     "decision_log": [],
 
-    "history": [],
+   "decision_log": [],
+
+"history": [],
+
+# -------------------------
+# Decision Linking
+# -------------------------
+"strategy_memory": {
+    "supplier": None,
+    "inventory": None,
+},
+
+# -------------------------
+# AI Motivation Storage
+# -------------------------
+"motivations": {},
 }
 
 for k, v in defaults.items():
@@ -82,6 +97,7 @@ EVENTS = {
         "title": "Quarter 1 - Current State Analysis",
         "description": "The new management team analyses the current supply chain.",
         "learning_objective": "Supply Chain Mapping and KPI Diagnosis",
+        "scenario_type": "analysis",
         "kpi_modifier": {"risk": 0, "lead_time": 0, "service_level": 0, "esg": 0, "profit": 0},
     },
     2: {
@@ -89,6 +105,7 @@ EVENTS = {
         "title": "Quarter 2 - Supplier Strategy",
         "description": "Suppliers differ in cost, quality and reliability.",
         "learning_objective": "Supplier Selection and Sourcing Strategy",
+        "scenario_type": "sourcing",
         "kpi_modifier": {"risk": 5, "lead_time": 3, "service_level": -2, "profit": 20000},
     },
     3: {
@@ -96,6 +113,7 @@ EVENTS = {
         "title": "Quarter 3 - Rotterdam Port Strike",
         "description": "Port strike in Rotterdam increases lead times by 14 days.",
         "learning_objective": "Risk Management and Resilience",
+        "scenario_type": "risk_management",
         "kpi_modifier": {"lead_time": 14, "risk": 12, "service_level": -4, "profit": -80000},
     },
     4: {
@@ -103,6 +121,7 @@ EVENTS = {
         "title": "Quarter 4 - Demand Surge",
         "description": "Customer demand increases unexpectedly.",
         "learning_objective": "Forecasting and Capacity Planning",
+        "scenario_type": "forecasting",
         "kpi_modifier": {"service_level": -5, "inventory": -100000, "profit": 50000},
     },
     5: {
@@ -110,6 +129,7 @@ EVENTS = {
         "title": "Quarter 5 - Sustainability Pressure",
         "description": "Customers demand greener sourcing.",
         "learning_objective": "ESG and Sustainable Supply Chains",
+        "scenario_type": "sustainability",
         "kpi_modifier": {"esg": 8, "profit": -30000, "risk": -2},
     },
     6: {
@@ -124,6 +144,7 @@ EVENTS = {
         "title": "Quarter 7 - Market Volatility",
         "description": "Demand becomes highly uncertain.",
         "learning_objective": "Agility and Flexibility",
+        "scenario_type": "agility",
         "kpi_modifier": {"risk": 8, "service_level": -3},
     },
     8: {
@@ -209,7 +230,16 @@ def sustainability_rating(score):
     if score >= 60:
         return "C+"
     return "C"
+# -------------------------------------------------
+# Strategy Memory Functions
+# -------------------------------------------------
 
+def save_strategy(category, value):
+    st.session_state.strategy_memory[category] = value
+
+
+def get_strategy(category):
+    return st.session_state.strategy_memory.get(category)
 
 def risk_label(score):
     if score <= 30:
@@ -237,7 +267,41 @@ def strategy_type():
     if profit >= 1350000:
         return "Cost Controller", "You controlled costs well and protected financial performance."
     return "Balanced Operator", "You made balanced decisions across profit, service, ESG and risk."
+# -------------------------------------------------
+# AI Motivation Feedback
+# -------------------------------------------------
 
+def generate_ai_feedback(choice, motivation):
+
+    text = motivation.lower()
+
+    if "risk" in text:
+        return (
+            "Your reasoning aligns with a resilience strategy. "
+            "Reducing supply chain risk can improve service reliability."
+        )
+
+    if "cost" in text:
+        return (
+            "Your reasoning aligns with a cost leadership strategy. "
+            "Lower costs can improve profitability but may increase disruption exposure."
+        )
+
+    if "sustain" in text:
+        return (
+            "Your reasoning aligns with a sustainability strategy. "
+            "Sustainable sourcing can improve ESG performance."
+        )
+
+    if "service" in text:
+        return (
+            "Your reasoning aligns with a customer service strategy. "
+            "Higher service levels can improve customer satisfaction."
+        )
+
+    return (
+        "Your reasoning reflects a balanced supply chain strategy."
+    )
 
 def get_forecast_tolerance():
     if st.session_state.difficulty == "Easy":
