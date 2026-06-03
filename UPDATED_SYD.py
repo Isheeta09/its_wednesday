@@ -1999,9 +1999,15 @@ if st.button(
         st.session_state.strategy_memory = {}
 
     if "low-cost" in choice.lower():
-        st.session_state.strategy_memory["supplier"] = "Low Cost Supplier"
-    elif "reliable" in choice.lower():
-    
+    st.session_state.strategy_memory["supplier"] = "Low Cost Supplier"
+elif "reliable" in choice.lower():
+    st.session_state.strategy_memory["supplier"] = "Reliable Supplier"
+else:
+    st.session_state.strategy_memory["supplier"] = "Split purchasing between both suppliers"
+
+st.session_state.motivations[
+    f"Q{st.session_state.quarter}_Purchasing"
+] = motivation.strip()
     if motivation.strip() == "":
             st.warning(
                 "Consider explaining your reasoning. Supply chain decisions should be justified using cost, service, risk or sustainability factors."
