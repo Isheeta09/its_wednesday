@@ -1987,24 +1987,23 @@ motivation = st.text_area(
     placeholder="Explain your reasoning (cost reduction, reliability, sustainability, risk reduction, etc.)",
     key=f"motivation_q{st.session_state.quarter}"
 )
-if st.button(
-            "✅ Confirm purchasing decision",
-            key="confirm_purchasing",
-            disabled=st.session_state.purchasing_confirmed or st.session_state.game_paused,
-):
-            st.session_state.purchasing_confirmed = True
-            st.session_state.purchasing_chosen = choice
+if st.button(...):
+     st.session_state.purchasing_confirmed = True
+     st.session_state.purchasing_chosen = choice
+
     if "strategy_memory" not in st.session_state:
-    st.session_state.strategy_memory = {}
-if "low-cost" in choice.lower():
-    st.session_state.strategy_memory["supplier"] = "Low Cost Supplier"
-elif "reliable" in choice.lower():
-    st.session_state.strategy_memory["supplier"] = "Reliable Supplier"
-else:
-    st.session_state.strategy_memory["supplier"] = "Split purchasing between both suppliers"
+        st.session_state.strategy_memory = {}
+
+    if "low-cost" in choice.lower():
+        st.session_state.strategy_memory["supplier"] = "Low Cost Supplier"
+    elif "reliable" in choice.lower():
+        st.session_state.strategy_memory["supplier"] = "Reliable Supplier"
+    else:
+        st.session_state.strategy_memory["supplier"] = "Split purchasing between both suppliers"
+
     st.session_state.motivations[
-            f"Q{st.session_state.quarter}_Purchasing"
-] = motivation.strip()        
+        f"Q{st.session_state.quarter}_Purchasing"
+    ] = motivation.strip()  
 if motivation.strip() == "":
             st.warning(
                 "Consider explaining your reasoning. Supply chain decisions should be justified using cost, service, risk or sustainability factors."
