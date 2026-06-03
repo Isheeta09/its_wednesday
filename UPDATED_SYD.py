@@ -175,6 +175,30 @@ def apply_event_modifiers_to_session_state(quarter):
         return
 
     event = get_event_for_quarter(quarter)
+    # =========================================
+# Linked Learning Scenario Logic
+# =========================================
+
+if quarter == 3:
+
+    supplier_choice = st.session_state.strategy_memory.get("supplier")
+
+    if supplier_choice == "Reliable Supplier":
+
+        event["kpi_modifier"]["risk"] = max(
+            0,
+            event["kpi_modifier"].get("risk", 0) - 5
+        )
+
+        event["kpi_modifier"]["lead_time"] = max(
+            0,
+            event["kpi_modifier"].get("lead_time", 0) - 4
+        )
+
+    elif supplier_choice == "Low Cost Supplier":
+
+        event["kpi_modifier"]["risk"] += 5
+        event["kpi_modifier"]["lead_time"] += 45
     key_map = {
         "risk": "risk_level",
         "lead_time": "lead_time_days",
