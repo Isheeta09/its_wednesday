@@ -178,7 +178,7 @@ def apply_event_modifiers_to_session_state(quarter):
     # =========================================
 # Linked Learning Scenario Logic
 # =========================================
-if quarter == 3:
+    if quarter == 3:
 
     if "strategy_memory" not in st.session_state:
         return
