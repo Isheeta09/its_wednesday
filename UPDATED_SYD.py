@@ -2036,7 +2036,7 @@ if st.button(
                 record_decision("Purchasing", choice, "Supplier strategy", impact)
                 st.session_state.completed_games.append("Purchasing")
 
-        if st.session_state.purchasing_confirmed:
+    if st.session_state.purchasing_confirmed:
             st.markdown("""
             <div class="result-neutral">
             Decision saved. The purchasing impact is included in the quarter results. Review the complete KPI effect after finishing the quarter.
