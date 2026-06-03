@@ -1988,18 +1988,18 @@ motivation = st.text_area(
     key=f"motivation_q{st.session_state.quarter}"
 )
 if st.button(...):
-     st.session_state.purchasing_confirmed = True
-     st.session_state.purchasing_chosen = choice
+    st.session_state.purchasing_confirmed = True
+    st.session_state.purchasing_chosen = choice
 
-        if "strategy_memory" not in st.session_state:
-            st.session_state.strategy_memory = {}
-    
-            if "low-cost" in choice.lower():
-                st.session_state.strategy_memory["supplier"] = "Low Cost Supplier"
-            elif "reliable" in choice.lower():
-                st.session_state.strategy_memory["supplier"] = "Reliable Supplier"
-            else:
-                st.session_state.strategy_memory["supplier"] = "Split purchasing between both suppliers"
+    if "strategy_memory" not in st.session_state:
+        st.session_state.strategy_memory = {}
+
+    if "low-cost" in choice.lower():
+        st.session_state.strategy_memory["supplier"] = "Low Cost Supplier"
+    elif "reliable" in choice.lower():
+        st.session_state.strategy_memory["supplier"] = "Reliable Supplier"
+    else:
+        st.session_state.strategy_memory["supplier"] = "Split purchasing between both suppliers"
         
             st.session_state.motivations[
                 f"Q{st.session_state.quarter}_Purchasing"
