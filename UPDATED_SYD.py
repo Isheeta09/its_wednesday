@@ -179,6 +179,10 @@ def apply_event_modifiers_to_session_state(quarter):
 # Linked Learning Scenario Logic
 # =========================================
 if quarter == 3:
+
+    if "strategy_memory" not in st.session_state:
+        return
+
     if "supplier" not in st.session_state.strategy_memory:
         return
 
@@ -208,6 +212,9 @@ if supplier_choice and previous_reason:
 
         event["kpi_modifier"]["risk"] += 5
         event["kpi_modifier"]["lead_time"] += 45
+    else:
+        event["kpi_modifier"]["risk"] += 2
+        event["kpi_modifier"]["lead_time"] += 10
     key_map = {
         "risk": "risk_level",
         "lead_time": "lead_time_days",
@@ -2690,6 +2697,7 @@ elif page == "👨‍🏫 Instructor view":
                 st.session_state.active_event_code = info["code"]
                 st.session_state.event_label = f"⚡ {info['label']}"
                 st.session_state.event = info["desc"]
+                apply_event_modifiers_to_session_state(st.session_state.quarter)
 
                 impact = apply_kpi_change(
                     profit=info["kpi"].get("profit", 0),
