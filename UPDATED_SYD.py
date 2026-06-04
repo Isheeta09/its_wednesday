@@ -192,6 +192,7 @@ def apply_event_modifiers_to_session_state(quarter):
     clamp_kpis()
     st.session_state.applied_event_quarters.append(quarter)
 
+
 def sync_quarter_event():
     if st.session_state.manual_event_override:
         return
