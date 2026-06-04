@@ -174,13 +174,12 @@ def apply_event_modifiers_to_session_state(quarter):
     if quarter in st.session_state.applied_event_quarters:
         return
 
-``````
-    previous_reason = st.session_state.motivations.get(
-        "Q2_Purchasing",
-        "No rationale recorded."
-    )
-
-    if supplier_choice and previous_reason:
+        previous_reason = st.session_state.motivations.get(
+            "Q2_Purchasing",
+            "No rationale recorded."
+        )
+    
+        if supplier_choice and previous_reason:
         event["description"] += (
             f"\n\nPrevious purchasing rationale: {previous_reason}"
         )
@@ -223,9 +222,6 @@ def apply_event_modifiers_to_session_state(quarter):
     clamp_kpis()
     st.session_state.applied_event_quarters.append(quarter)
 ```
-
-
-          
 def sync_quarter_event():
     if st.session_state.manual_event_override:
         return
