@@ -204,6 +204,17 @@ def sync_quarter_event():
 
     apply_event_modifiers_to_session_state(st.session_state.quarter)
 
+def sync_quarter_event():
+    if st.session_state.manual_event_override:
+        return
+
+    event = get_event_for_quarter(st.session_state.quarter)
+    st.session_state.active_event_code = event["code"]
+    st.session_state.event_label = event["title"]
+    st.session_state.event = event["description"]
+
+    apply_event_modifiers_to_session_state(st.session_state.quarter)
+
 
 sync_quarter_event()
 
