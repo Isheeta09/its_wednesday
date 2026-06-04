@@ -174,7 +174,7 @@ def apply_event_modifiers_to_session_state(quarter):
     if quarter in st.session_state.applied_event_quarters:
         return
 
-```
+``````
     previous_reason = st.session_state.motivations.get(
         "Q2_Purchasing",
         "No rationale recorded."
@@ -186,7 +186,6 @@ def apply_event_modifiers_to_session_state(quarter):
         )
 
         if supplier_choice == "Reliable Supplier":
-
             event["kpi_modifier"]["risk"] = max(
                 0,
                 event["kpi_modifier"].get("risk", 0) - 5
@@ -198,7 +197,6 @@ def apply_event_modifiers_to_session_state(quarter):
             )
 
         elif supplier_choice == "Low Cost Supplier":
-
             event["kpi_modifier"]["risk"] += 5
             event["kpi_modifier"]["lead_time"] += 45
 
@@ -225,6 +223,7 @@ def apply_event_modifiers_to_session_state(quarter):
     clamp_kpis()
     st.session_state.applied_event_quarters.append(quarter)
 ```
+
 
           
 def sync_quarter_event():
