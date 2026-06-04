@@ -156,7 +156,6 @@ EVENTS = {
     },
 }
 
-
 def get_event_for_quarter(quarter):
     return EVENTS.get(quarter, EVENTS[1])
 
@@ -173,6 +172,39 @@ def clamp_kpis():
 def apply_event_modifiers_to_session_state(quarter):
     if quarter in st.session_state.applied_event_quarters:
         return
+
+    event = get_event_for_quarter(quarter)
+    key_map = {
+        "risk": "risk_level",
+        "lead_time": "lead_time_days",
+        "service_level": "service_level",
+        "esg": "sustainability_score",
+        "profit": "net_profit",
+        "inventory": "inventory_value",
+        "revenue": "revenue",
+        "score": "score",
+    }
+
+    for key, change in event["kpi_modifier"].items():
+        session_key = key_map.get(key)
+        if session_key in st.session_state:
+            st.session_state[session_key] += change
+
+    clamp_kpis()
+    st.session_state.applied_event_quarters.append(quarter)
+
+
+def sync_quarter_event():
+    if st.session_state.manual_event_override:
+        return
+
+    event = get_event_for_quarter(st.session_state.quarter)
+    st.session_state.active_event_code = event["code"]
+    st.session_state.event_label = event["title"]
+    st.session_state.event = event["description"]
+
+    apply_event_modifiers_to_session_state(st.session_state.quarter)
+
 
 sync_quarter_event()
 
