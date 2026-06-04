@@ -215,7 +215,6 @@ def sync_quarter_event():
 
     apply_event_modifiers_to_session_state(st.session_state.quarter)
 
-
 sync_quarter_event()
 
 def money(value):
