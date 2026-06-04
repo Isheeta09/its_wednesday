@@ -174,53 +174,53 @@ def apply_event_modifiers_to_session_state(quarter):
     if quarter in st.session_state.applied_event_quarters:
         return
 
-        previous_reason = st.session_state.motivations.get(
-            "Q2_Purchasing",
-            "No rationale recorded."
-        )
-    
-        if supplier_choice and previous_reason:
-        event["description"] += (
-            f"\n\nPrevious purchasing rationale: {previous_reason}"
-        )
-
-        if supplier_choice == "Reliable Supplier":
-            event["kpi_modifier"]["risk"] = max(
-                0,
-                event["kpi_modifier"].get("risk", 0) - 5
-            )
-
-            event["kpi_modifier"]["lead_time"] = max(
-                0,
-                event["kpi_modifier"].get("lead_time", 0) - 4
-            )
-
-        elif supplier_choice == "Low Cost Supplier":
-            event["kpi_modifier"]["risk"] += 5
-            event["kpi_modifier"]["lead_time"] += 45
-
-        else:
-            event["kpi_modifier"]["risk"] += 2
-            event["kpi_modifier"]["lead_time"] += 10
-
-    key_map = {
-        "risk": "risk_level",
-        "lead_time": "lead_time_days",
-        "service_level": "service_level",
-        "esg": "sustainability_score",
-        "profit": "net_profit",
-        "inventory": "inventory_value",
-        "revenue": "revenue",
-        "score": "score",
-    }
-
-    for key, change in event["kpi_modifier"].items():
-        session_key = key_map.get(key)
-        if session_key in st.session_state:
-            st.session_state[session_key] += change
-
-    clamp_kpis()
-    st.session_state.applied_event_quarters.append(quarter)
+                previous_reason = st.session_state.motivations.get(
+                    "Q2_Purchasing",
+                    "No rationale recorded."
+                )
+            
+                if supplier_choice and previous_reason:
+                event["description"] += (
+                    f"\n\nPrevious purchasing rationale: {previous_reason}"
+                )
+        
+                if supplier_choice == "Reliable Supplier":
+                    event["kpi_modifier"]["risk"] = max(
+                        0,
+                        event["kpi_modifier"].get("risk", 0) - 5
+                    )
+        
+                    event["kpi_modifier"]["lead_time"] = max(
+                        0,
+                        event["kpi_modifier"].get("lead_time", 0) - 4
+                    )
+        
+                elif supplier_choice == "Low Cost Supplier":
+                    event["kpi_modifier"]["risk"] += 5
+                    event["kpi_modifier"]["lead_time"] += 45
+        
+                else:
+                    event["kpi_modifier"]["risk"] += 2
+                    event["kpi_modifier"]["lead_time"] += 10
+        
+            key_map = {
+                "risk": "risk_level",
+                "lead_time": "lead_time_days",
+                "service_level": "service_level",
+                "esg": "sustainability_score",
+                "profit": "net_profit",
+                "inventory": "inventory_value",
+                "revenue": "revenue",
+                "score": "score",
+            }
+        
+            for key, change in event["kpi_modifier"].items():
+                session_key = key_map.get(key)
+                if session_key in st.session_state:
+                    st.session_state[session_key] += change
+        
+            clamp_kpis()
+            st.session_state.applied_event_quarters.append(quarter)
 ```
 def sync_quarter_event():
     if st.session_state.manual_event_override:
