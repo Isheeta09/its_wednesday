@@ -168,7 +168,6 @@ def clamp_kpis():
     st.session_state.lead_time_days = max(1, st.session_state.lead_time_days)
     st.session_state.inventory_value = max(0, st.session_state.inventory_value)
 
-
 def apply_event_modifiers_to_session_state(quarter):
     if quarter in st.session_state.applied_event_quarters:
         return
@@ -192,7 +191,6 @@ def apply_event_modifiers_to_session_state(quarter):
 
     clamp_kpis()
     st.session_state.applied_event_quarters.append(quarter)
-
 
 def sync_quarter_event():
     if st.session_state.manual_event_override:
